@@ -42,6 +42,8 @@ public class PostController {
         return postService.getPostById(id);
     }
 
+
+
     @PostMapping
     public void create(@RequestBody PostRequestDto postRequestDto) {
         postService.create(postRequestDto);

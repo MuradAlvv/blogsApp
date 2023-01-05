@@ -1,11 +1,12 @@
 package com.example.blogs.security;
 
-import com.example.blogs.me.Username;
 import com.example.blogs.security.user.User;
 import com.example.blogs.security.user.UserDetails;
 import com.example.blogs.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,11 +27,23 @@ public class SecurityUtil {
     }
 
     public String getUsername() {
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return principal.getUsername();
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        try {
+            SecurityContext context = SecurityContextHolder.getContext();
+            if (Objects.nonNull(context)) {
+                Authentication authentication = context.getAuthentication();
+                if (Objects.nonNull(authentication)) {
+                    if (authentication.isAuthenticated()) {
+                        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                        return principal.getUsername();
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+                    }
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println("not authorized");
         }
+        return null;
     }
 }

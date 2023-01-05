@@ -42,5 +42,6 @@ public class AuthenticationService {
 
         HttpSession session = request.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+
     }
 }

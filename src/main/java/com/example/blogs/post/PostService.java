@@ -3,7 +3,11 @@ package com.example.blogs.post;
 
 import com.example.blogs.author.Author;
 import com.example.blogs.author.AuthorRepository;
+import com.example.blogs.profile.ProfileImage;
+import com.example.blogs.profile.ProfileImageResponseDto;
+import com.example.blogs.profile.ProfileImageService;
 import com.example.blogs.security.SecurityUtil;
+import com.example.blogs.security.user.User;
 import com.example.blogs.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final AuthorRepository authorRepository;
+    private final ProfileImageService profileImageService;
     private final SecurityUtil securityUtil;
 
     public Page<PostResponseDto> getAll(int page, int size) {
