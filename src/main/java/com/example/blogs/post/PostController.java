@@ -1,5 +1,7 @@
 package com.example.blogs.post;
 
+import com.example.blogs.profile.ProfileDetailsResponseDto;
+import com.example.blogs.profile.ProfileDetailsService;
 import com.example.blogs.security.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +31,7 @@ public class PostController {
         return postService.getAll(0, 1000).stream().toList();
 
     }
+
 
     @GetMapping("/author/{username}")
     public List<PostResponseDto> getAllPostsByUsername(@PathVariable String username) {

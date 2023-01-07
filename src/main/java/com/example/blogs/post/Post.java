@@ -27,4 +27,5 @@ public class Post {
     private Author author;
     private Integer likes;
 
+
 }

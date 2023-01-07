@@ -3,7 +3,9 @@ package com.example.blogs.post;
 
 import com.example.blogs.author.Author;
 import com.example.blogs.author.AuthorRepository;
+import com.example.blogs.like.Like;
 import com.example.blogs.like.LikeRepository;
+import com.example.blogs.profile.ProfileDetailsResponseDto;
 import com.example.blogs.profile.ProfileDetailsService;
 import com.example.blogs.security.SecurityUtil;
 import com.example.blogs.security.user.User;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
-    private final ProfileDetailsService profileImageService;
+    private final ProfileDetailsService profileDetailsService;
     private final SecurityUtil securityUtil;
     private final LikeRepository likeRepository;
 
@@ -72,5 +75,17 @@ public class PostService {
         User user = userRepository.findByName(username).orElseThrow();
         List<PostResponseDto> posts = postRepository.findAllPostsByUser(user);
         return posts;
+    }
+
+    public List<ProfileDetailsResponseDto> getAllLikedUsersByPostId(Integer id) {
+        List<Like> likeList = likeRepository.findAllByPostId(id);
+        List<User> liked = likeList.stream().map(Like::getUser).toList();
+
+        System.out.println(liked);
+        List<ProfileDetailsResponseDto> profileDetailsResponseDtoList = new ArrayList<>();
+        liked.stream().forEach(user -> profileDetailsResponseDtoList.add(
+                new ProfileDetailsResponseDto(user.getUsername(), profileDetailsService.getUrl(user.getUsername()))));
+
+        return profileDetailsResponseDtoList;
     }
 }

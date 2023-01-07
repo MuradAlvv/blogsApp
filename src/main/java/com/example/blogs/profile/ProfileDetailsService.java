@@ -41,7 +41,7 @@ public class ProfileDetailsService {
 
 
     public String getUrl(String username) {
-        User user = securityUtil.getUser();
+        User user = userRepository.findByName(username).orElseThrow();
         ProfileDetails profileImage = user.getProfileImage();
         return profileImage.getUrl();
 
