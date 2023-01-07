@@ -3,9 +3,8 @@ package com.example.blogs.post;
 
 import com.example.blogs.author.Author;
 import com.example.blogs.author.AuthorRepository;
-import com.example.blogs.profile.ProfileImage;
-import com.example.blogs.profile.ProfileImageResponseDto;
-import com.example.blogs.profile.ProfileImageService;
+import com.example.blogs.like.LikeRepository;
+import com.example.blogs.profile.ProfileDetailsService;
 import com.example.blogs.security.SecurityUtil;
 import com.example.blogs.security.user.User;
 import com.example.blogs.security.user.UserRepository;
@@ -15,8 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -26,8 +25,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
-    private final ProfileImageService profileImageService;
+    private final ProfileDetailsService profileImageService;
     private final SecurityUtil securityUtil;
+    private final LikeRepository likeRepository;
 
     public Page<PostResponseDto> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -50,9 +50,11 @@ public class PostService {
         postRepository.save(post);
     }
 
+    @Transactional
     public void deletePostById(Integer postId) {
         List<Integer> postsIds = getLoggedUserPostsIds();
         if (postsIds.contains(postId)) {
+            likeRepository.deleteByPost(postRepository.findById(postId).get());
             postRepository.deleteById(postId);
         } else {
             System.out.println("No such post in author posts");

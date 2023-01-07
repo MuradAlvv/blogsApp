@@ -1,6 +1,6 @@
 package com.example.blogs.author;
 
-import com.example.blogs.profile.ProfileImageResponseDto;
+import com.example.blogs.profile.ProfileDetailsResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,6 +10,6 @@ public class AuthorResponseDto {
 
     private String fullName;
 
-    private ProfileImageResponseDto profileUrl;
+    private ProfileDetailsResponseDto profileUrl;
 
 }

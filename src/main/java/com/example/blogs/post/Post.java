@@ -3,6 +3,8 @@ package com.example.blogs.post;
 import com.example.blogs.author.Author;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @Getter
 @Setter
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class Post {
 
     @Id

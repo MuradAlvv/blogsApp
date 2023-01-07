@@ -1,7 +1,6 @@
 package com.example.blogs.author;
 
 
-import com.example.blogs.profile.ProfileImage;
 import com.example.blogs.security.user.User;
 import lombok.Getter;
 import lombok.Setter;

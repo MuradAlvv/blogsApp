@@ -4,7 +4,10 @@ import com.example.blogs.post.Post;
 import com.example.blogs.security.user.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,5 +27,6 @@ public class Like {
     @OneToOne
     private User user;
     @OneToOne
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
 }

@@ -31,17 +31,18 @@ public class LikeService {
             Post post = postRepository.findById(postId).orElseThrow();
             like.setPost(post);
             like.setUser(securityUtil.getUser());
-            if(Objects.nonNull(post.getLikes())) {
-                post.setLikes(post.getLikes() + 1);
-                likeRepository.save(like);
-            }else {
+            likeRepository.save(like);
+            if (Objects.nonNull(post.getLikes())) {
+                post.setLikes(likeRepository.findAllByPostId(postId).size());
+            } else {
                 post.setLikes(1);
-                likeRepository.save(like);
             }
+            postRepository.save(post);
         } else {
-            likeRepository.deleteByPost(postRepository.findById(postId).get());
-            Post post = postRepository.findById(postId).orElseThrow();
-            post.setLikes(post.getLikes() - 1);
+            Post post = postRepository.findById(postId).get();
+            likeRepository.deleteByPostAndUser(post, securityUtil.getUser());
+            post.setLikes(likeRepository.findAllByPostId(postId).size());
+            postRepository.save(post);
         }
     }
 }

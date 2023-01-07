@@ -1,7 +1,7 @@
 package com.example.blogs.security.user;
 
 
-import com.example.blogs.profile.ProfileImage;
+import com.example.blogs.profile.ProfileDetails;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String password;
 
     @OneToOne
-    private ProfileImage profileImage;
+    private ProfileDetails profileImage;
 
 
     @Override
