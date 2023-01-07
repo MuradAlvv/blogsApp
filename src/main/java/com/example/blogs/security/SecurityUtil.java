@@ -5,6 +5,7 @@ import com.example.blogs.security.user.UserDetails;
 import com.example.blogs.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +23,14 @@ public class SecurityUtil {
 
     public User getUser() {
         String username = getUsername();
-        User user = userRepository.findByName(username).orElseThrow();
-        return user;
+        try {
+            User user = userRepository.findByName(username).orElseThrow();
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     public String getUsername() {
@@ -36,7 +43,8 @@ public class SecurityUtil {
                         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                         return principal.getUsername();
                     } else {
-                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+                        System.out.println("not authorized");
+                        ;
                     }
                 }
             }
@@ -45,5 +53,9 @@ public class SecurityUtil {
             System.out.println("not authorized");
         }
         return null;
+    }
+
+    public boolean isAuthenticated() {
+        return getUsername() != null;
     }
 }

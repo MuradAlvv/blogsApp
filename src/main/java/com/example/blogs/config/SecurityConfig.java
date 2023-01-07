@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
@@ -47,6 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/auth").
                 permitAll().
                 antMatchers(HttpMethod.POST, "/posts").
+                authenticated().
+                antMatchers(HttpMethod.DELETE, "/posts/**").
+                authenticated().
+                antMatchers(HttpMethod.POST, "/likes/**").
                 authenticated();
     }
 

@@ -2,6 +2,8 @@ package com.example.blogs.post;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,17 +27,16 @@ public class PostController {
 //    }
 
     @GetMapping()
-    public List<PostResponseDto> getAllPostslist(){
-        return postService.getAll(0,1000).stream().toList();
+    public List<PostResponseDto> getAllPostslist() {
+        return postService.getAll(0, 1000).stream().toList();
 
     }
 
-    @GetMapping("/author/{authorId}")
-    public Page<PostResponseDto> getAllByAuthorId(@PathVariable Integer authorId,
-                                                  @RequestParam int page,
-                                                  @RequestParam int size) {
-        return postService.getAllByAuthorId(authorId, page, size);
+    @GetMapping("/author/{username}")
+    public List<PostResponseDto> getAllPostsByUsername(@PathVariable String username) {
+        return postService.getUserPosts(username);
     }
+
 
     @GetMapping("/{id}")
     public PostResponseDto getById(@PathVariable Integer id) {
@@ -43,10 +44,15 @@ public class PostController {
     }
 
 
-
     @PostMapping
     public void create(@RequestBody PostRequestDto postRequestDto) {
         postService.create(postRequestDto);
+    }
+
+
+    @DeleteMapping("/{postId}")
+    public void delete(@PathVariable Integer postId) {
+        postService.deletePostById(postId);
     }
 
 }

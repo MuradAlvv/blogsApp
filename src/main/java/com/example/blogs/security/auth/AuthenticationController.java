@@ -30,22 +30,13 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public void login(@RequestBody LoginRequestDto loginUserRequestDto, HttpServletRequest request) {
-        authenticationService.login(loginUserRequestDto,request);
-        Enumeration<String> a = request.getSession().getAttributeNames();
-
-
+        authenticationService.login(loginUserRequestDto, request);
     }
 
     @GetMapping("/logout")
-    public void logout(HttpServletRequest request){
-//        System.out.println(request.getSession().getAttribute("SPRING_SECURITY_CONTEXT"));
+    public void logout(HttpServletRequest request) {
         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
         SecurityContextHolder.clearContext();
-//        try {
-//            System.out.println(request.getSession().getAttribute("SESSIONID"));
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
 }

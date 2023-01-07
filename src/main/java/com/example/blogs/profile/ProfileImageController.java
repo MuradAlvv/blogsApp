@@ -23,7 +23,7 @@ public class ProfileImageController {
 
     @GetMapping("/name")
     public ProfileImageResponseDto getName() {
-        return new ProfileImageResponseDto(securityUtil.getUsername(), profileImageService.getUrl(securityUtil.getUsername()).getUrl());
+        return profileImageService.getProfileName();
     }
 
 

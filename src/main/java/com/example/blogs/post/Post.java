@@ -22,5 +22,6 @@ public class Post {
     private String content;
     @ManyToOne
     private Author author;
+    private Integer likes;
 
 }
