@@ -16,15 +16,17 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    @Query("select new com.example.blogs.post.PostResponseDto(p.content,p.author,p.id,p.likes) from Post p")
+    @Query("select new com.example.blogs.post.PostResponseDto(p.content,p.author,p.id,p.likes,p.createdAt,p.hasComment)" +
+            " from Post p order by p.createdAt")
     Page<PostResponseDto> findAllPosts(Pageable pageable);
 
 
-    @Query("select new com.example.blogs.post.PostResponseDto(p.content,p.author,p.id,p.likes) from Post p "
-            + "where p.id = :id")
+    @Query("select new com.example.blogs.post.PostResponseDto(p.content,p.author,p.id,p.likes,p.createdAt,p.hasComment)" +
+            " from Post p where p.id = :id")
     Optional<PostResponseDto> findPostById(Integer id);
 
-    @Query("select new com.example.blogs.post.PostResponseDto(p.content,p.author,p.id,p.likes) from Post p where p.author.user = :user")
+    @Query("select new com.example.blogs.post.PostResponseDto(p.content,p.author,p.id,p.likes,p.createdAt,p.hasComment)" +
+            " from Post p where p.author.user = :user")
     List<PostResponseDto> findAllPostsByUser(User user);
 
     @Query("select p from Post p where p.author.user.id = :id")

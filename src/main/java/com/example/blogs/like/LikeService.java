@@ -37,12 +37,12 @@ public class LikeService {
             } else {
                 post.setLikes(1);
             }
-            postRepository.save(post);
+//            postRepository.save(post);
         } else {
             Post post = postRepository.findById(postId).get();
             likeRepository.deleteByPostAndUser(post, securityUtil.getUser());
             post.setLikes(likeRepository.findAllByPostId(postId).size());
-            postRepository.save(post);
+//            postRepository.save(post);
         }
     }
 }

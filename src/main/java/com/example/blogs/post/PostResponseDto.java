@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@RequiredArgsConstructor
 public class PostResponseDto {
     private Integer id;
 
@@ -27,16 +27,18 @@ public class PostResponseDto {
     private AuthorResponseDto authorResponseDto;
     private Integer likes;
 
-//    private List<ProfileDetailsResponseDto> likedUsers;
+    private LocalDateTime createdAt;
+    private boolean hasComment;
 
     public PostResponseDto(String content, Author author,
-                           Integer id, Integer likes) {
+                           Integer id, Integer likes, LocalDateTime createdAt, boolean hasComment) {
         this.content = content;
         this.authorResponseDto = new AuthorResponseDto(author.getFullName(),
                 ProfileDetailsMapper.toResponseDto(author.getUser().getProfileImage()));
         this.id = id;
         this.likes = likes;
-
+        this.createdAt = createdAt;
+        this.hasComment = hasComment;
     }
 
 
