@@ -47,6 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers(HttpMethod.POST, "/likes/**").
                 authenticated().
                 antMatchers(HttpMethod.POST, "/comments/**").
+                authenticated().
+                antMatchers(HttpMethod.POST,"/friends/**").
                 authenticated();
     }
 
