@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private ProfileDetails profileImage;
 
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>(List.of(new SimpleGrantedAuthority("user")));

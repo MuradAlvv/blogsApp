@@ -1,6 +1,7 @@
 package com.example.blogs.comment;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,11 @@ public class CommentController {
     @GetMapping("/reply/{commentId}")
     public Set<CommentResponseDto> getAllReplies(@PathVariable Integer commentId) {
         return commentService.getAllByCommentId(commentId);
+    }
+
+    @DeleteMapping("/{commentId}")
+    public void delete(@PathVariable Integer commentId) {
+        commentService.deleteComment(commentId);
     }
 
 

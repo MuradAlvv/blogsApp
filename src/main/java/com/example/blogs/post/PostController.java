@@ -1,8 +1,6 @@
 package com.example.blogs.post;
 
-import com.example.blogs.profile.ProfileDetailsResponseDto;
-import com.example.blogs.profile.ProfileDetailsService;
-import com.example.blogs.security.user.User;
+import com.example.blogs.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +18,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final SecurityUtil securityUtil;
 
 //    @GetMapping
 //    public Page<PostResponseDto> getAllPosts(@RequestParam int page, @RequestParam int size) {
@@ -28,8 +27,10 @@ public class PostController {
 
     @GetMapping()
     public List<PostResponseDto> getAllPostslist() {
+//        System.out.println(SecurityContextHolder.getContext());
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+//        System.out.println(securityUtil.isAuthenticated());
         return postService.getAll(0, 1000).stream().toList();
-
     }
 
 

@@ -75,4 +75,8 @@ public class CommentService {
         return commentResponseDtoSet;
 
     }
+
+    public void deleteComment(Integer commentId) {
+        commentRepository.deleteById(commentId);
+    }
 }

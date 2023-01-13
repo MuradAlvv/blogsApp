@@ -9,17 +9,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class SecurityUtil {
 
     private final UserRepository userRepository;
-
 
     public User getUser() {
         String username = getUsername();
@@ -44,7 +46,6 @@ public class SecurityUtil {
                         return principal.getUsername();
                     } else {
                         System.out.println("not authorized");
-                        ;
                     }
                 }
             }
@@ -56,6 +57,14 @@ public class SecurityUtil {
     }
 
     public boolean isAuthenticated() {
-        return getUsername() != null;
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (Objects.nonNull(context)) {
+            Authentication authentication = context.getAuthentication();
+            if (Objects.nonNull(authentication)) {
+                return authentication.isAuthenticated();
+            }
+        }
+        return false;
     }
+
 }

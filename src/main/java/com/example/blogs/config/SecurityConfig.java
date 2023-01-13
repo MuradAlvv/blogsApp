@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -29,19 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-//    @Override
-//    public void configure(WebSecurity web) {
-//        web.ignoring()
-//                .antMatchers("/auth/login")
-//                .antMatchers("/auth/register");
-//    }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 cors().and().
                 csrf().disable().
+                anonymous().disable().
                 authorizeRequests().
                 antMatchers("/auth").
                 permitAll().
