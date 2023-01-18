@@ -1,5 +1,6 @@
 package com.example.blogs.security.auth;
 
+import com.example.blogs.security.user.dto.EmailConfirmRequestDto;
 import com.example.blogs.security.user.dto.LoginRequestDto;
 import com.example.blogs.security.user.dto.RegisterRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void register(@RequestBody RegisterRequestDto registerRequestDto) {
         authenticationService.register(registerRequestDto);
+    }
+
+    @PostMapping("/confirm")
+    public void sendConfirmEmail(@RequestBody RegisterRequestDto registerRequestDto) {
+        authenticationService.sendConfirmEmail(registerRequestDto);
     }
 
 
