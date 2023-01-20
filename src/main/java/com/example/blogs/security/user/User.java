@@ -31,15 +31,16 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
+    private String username;
     private String password;
+    private String email;
+    private String fullname;
 
     @OneToOne
     private ProfileDetails profileImage;
 
     @ManyToMany
     private Set<User> friends;
-
 
 
     @Override
@@ -49,7 +50,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     @Override

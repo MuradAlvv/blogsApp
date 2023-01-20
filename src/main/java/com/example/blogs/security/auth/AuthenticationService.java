@@ -32,13 +32,19 @@ public class AuthenticationService {
 
     private String confirmCode;
 
-    public void register(RegisterRequestDto userRegisterRequestDto) {
+    public void register(RegisterRequestDto userRegisterRequestDto, HttpServletRequest httpServletRequest) {
 
         User user = new User();
-        user.setName(userRegisterRequestDto.getUsername());
+        user.setEmail(userRegisterRequestDto.getEmail());
+        user.setFullname(userRegisterRequestDto.getFullname());
+        user.setUsername(userRegisterRequestDto.getUsername());
         user.setPassword(passwordEncoder.encode(userRegisterRequestDto.getPassword()));
         if (confirmEmail(userRegisterRequestDto)) {
             userRepository.save(user);
+            LoginRequestDto loginRequestDto = new LoginRequestDto();
+            loginRequestDto.setPassword(userRegisterRequestDto.getPassword());
+            loginRequestDto.setUsername(userRegisterRequestDto.getUsername());
+            login(loginRequestDto, httpServletRequest);
         } else {
             throw new RuntimeException("invalid confirm code");
         }
@@ -50,12 +56,8 @@ public class AuthenticationService {
 
     public void sendConfirmEmail(RegisterRequestDto registerRequestDto) {
         try {
-            confirmCode = emailService.sendTo(registerRequestDto.getUsername());
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+            confirmCode = emailService.sendTo(registerRequestDto.getEmail());
+        } catch (MessagingException | IOException | GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
     }
@@ -64,13 +66,25 @@ public class AuthenticationService {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginUserRequestDto.getUsername(),
                 loginUserRequestDto.getPassword());
 
-        Authentication authentication = authenticationManager.authenticate(token);
+        try {
+            Authentication authentication = authenticationManager.authenticate(token);
+            SecurityContext context = SecurityContextHolder.getContext();
+            context.setAuthentication(authentication);
 
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(authentication);
+        } catch (Exception e) {
+            try {
+                User user = userRepository.findByEmail(loginUserRequestDto.getUsername()).orElseThrow();
+                UsernamePasswordAuthenticationToken tokenEmail =
+                        new UsernamePasswordAuthenticationToken(user.getUsername(), loginUserRequestDto.getPassword());
+                Authentication authentication = authenticationManager.authenticate(tokenEmail);
+                SecurityContext context = SecurityContextHolder.getContext();
+                context.setAuthentication(authentication);
 
-        HttpSession session = request.getSession(true);
-        session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+            } catch (Exception exception) {
+                throw new RuntimeException("bad credentials");
+            }
+        }
 
     }
+
 }

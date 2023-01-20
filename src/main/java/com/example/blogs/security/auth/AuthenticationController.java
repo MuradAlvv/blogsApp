@@ -1,10 +1,8 @@
 package com.example.blogs.security.auth;
 
-import com.example.blogs.security.user.dto.EmailConfirmRequestDto;
 import com.example.blogs.security.user.dto.LoginRequestDto;
 import com.example.blogs.security.user.dto.RegisterRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,8 +21,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequestDto registerRequestDto) {
-        authenticationService.register(registerRequestDto);
+    public void register(@RequestBody RegisterRequestDto registerRequestDto, HttpServletRequest request) {
+        authenticationService.register(registerRequestDto, request);
     }
 
     @PostMapping("/confirm")

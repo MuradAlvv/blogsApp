@@ -1,9 +1,12 @@
 package com.example.blogs.like;
 
+import com.example.blogs.notification.NotificationRequestDto;
+import com.example.blogs.notification.NotificationService;
 import com.example.blogs.post.Post;
 import com.example.blogs.post.PostRepository;
 import com.example.blogs.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +20,7 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
+    private final NotificationService notificationService;
     private final SecurityUtil securityUtil;
 
 
@@ -37,12 +41,25 @@ public class LikeService {
             } else {
                 post.setLikes(1);
             }
-//            postRepository.save(post);
+
+
+            String content = securityUtil.getUsername() + "liked your post";
+            String title = "Like notify";
+            Integer userId = post.getAuthor().getUser().getId();
+
+            NotificationRequestDto notificationRequestDto = new NotificationRequestDto();
+            notificationRequestDto.setTitle(title);
+            notificationRequestDto.setContent(content);
+            notificationRequestDto.setUserId(userId);
+
+            notificationService.send(notificationRequestDto);
+
         } else {
             Post post = postRepository.findById(postId).get();
             likeRepository.deleteByPostAndUser(post, securityUtil.getUser());
             post.setLikes(likeRepository.findAllByPostId(postId).size());
 //            postRepository.save(post);
         }
+
     }
 }

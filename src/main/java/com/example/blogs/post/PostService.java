@@ -72,7 +72,7 @@ public class PostService {
     }
 
     public List<PostResponseDto> getUserPosts(String username) {
-        User user = userRepository.findByName(username).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow();
         List<PostResponseDto> posts = postRepository.findAllPostsByUser(user);
         return posts;
     }

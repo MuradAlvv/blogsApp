@@ -29,7 +29,7 @@ public class ChatController {
     @SendTo("/topic/greetings")
     public Greeting showMessage(Principal principal, Message message) {
         String name = principal.getName();
-        User user = userRepository.findByName(name).orElseThrow();
+        User user = userRepository.findByUsername(name).orElseThrow();
         return new Greeting(message.getContent(),
                 new ProfileDetailsResponseDto(user.getUsername(), user.getProfileImage().getUrl()));
     }

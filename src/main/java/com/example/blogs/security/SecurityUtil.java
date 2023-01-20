@@ -26,10 +26,10 @@ public class SecurityUtil {
     public User getUser() {
         String username = getUsername();
         try {
-            User user = userRepository.findByName(username).orElseThrow();
+            User user = userRepository.findByUsername(username).orElseThrow();
             return user;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("error in getUser()");
             return null;
         }
 
